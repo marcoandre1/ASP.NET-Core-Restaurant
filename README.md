@@ -15,3 +15,11 @@ It is from a pluralsight tutorial [OdeToFood](https://github.com/OdeToCode/OdeTo
 - In the `Startup.cs` file add `services.AddSingleton<IRestaurantData, InMemoryRestaurantData>();`. You will need to add the dependency to `OdeToFood.Data`. You can right click on the `Dependencies` and `Add Reference...`.
 - Modify `List.cshtml.cs` to add the implementation to `OdeToFood.Core` and `OdeToFood.Data`.
 - Finally, modify the `List.cshtml` file to show the list of the restaurants.
+
+## Part two
+- Add a form in the `List.cshtml` file to enable a quich search for the list of restaurants.
+- Modify the binding model, _the `List.cshtml.cs` file_, to bind the **SearchTerm** to the name of the restaurants. Use the `[BindProperty]` attribute.
+- Add the `Detail.cshtml` Razor page and congfigure the binding model to show restaurant data.
+- Finally, add a `NotFound.cshtml` Razor page (without model) to redirect the user to a not found page if the id passed in the query does not exist. To achienve this : 
+  - modify the `public void OnGet` method to `public IActionResult OnGet`
+  - use the `RedirectToPage` method.
