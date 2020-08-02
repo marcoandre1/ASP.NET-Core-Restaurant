@@ -23,3 +23,48 @@ It is from a pluralsight tutorial [OdeToFood](https://github.com/OdeToCode/OdeTo
 - Finally, add a `NotFound.cshtml` Razor page (without model) to redirect the user to a not found page if the id passed in the query does not exist. To achienve this : 
   - modify the `public void OnGet` method to `public IActionResult OnGet`
   - use the `RedirectToPage` method.
+
+
+## Part three
+- Add the `Edit.chstml` Razor Page to the Restaurants folder to allow the creation and the edition of restaurants.
+- Manage the creation and the edition of restaurants in the `Edit.cshtml.cs` model as follow :
+```csharp
+if (restaurantId.HasValue) // if the id exists, we want to get the info of the restaurant
+{
+    Restaurant = restaurantData.GetById(restaurantId.Value);
+}
+else // if the id doesn't exist, we want to create a new restaurant
+{
+    Restaurant = new Restaurant();
+}
+```
+- Add the `Add` and the `Update` methods to the `IRestaurantData.cs` interface.
+- Implement the methods in the `Edit.cshtml.cs` model as follow :
+```csharp
+if (Restaurant.Id > 0) // if the restaurant id is superior to 0, we assume that the restaurant already exists and that we want to update it
+{
+    restaurantData.Update(Restaurant);
+}
+else // if the restaurant id is equal to 0 (or is null), we assume that the restaurant doesn't exist and that we want to create it
+{
+    restaurantData.Add(Restaurant);
+}
+```
+- use the provided built-in method `IsValid` to validate the model :
+```csharp
+if (!ModelState.IsValid) // if the model for the Edit page is not valid, we return the page
+{
+    Cuisines = htmlHelper.GetEnumSelectList<CuisineType>(); // this returns the CuisineType DropDownList if the model is not valid
+    return Page();
+}
+```
+- The validation is done in the `Restaurant.cs` class with the _bracket properties_ :
+```csharp
+[Required, StringLength(80)]
+public string Name { get; set; }
+
+[Required, StringLength(255)]
+public string Location { get; set; }
+```
+- The validation is shown to the user with the `asp-validation-for` tag in the `Edit.cshtml` Razor page
+
